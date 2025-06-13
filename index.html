@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Convertisseur d'Unités</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="language-switcher">
+      <label for="language">🌍 Langue / Language:</label>
+      <select id="language" onchange="changeLanguage()">
+        <option value="fr">Français</option>
+        <option value="en">English</option>
+      </select>
+    </div>
+
+    <h1 id="title">Convertisseur d'Unités</h1>
+
+    <label for="value" id="label-value">Valeur à convertir :</label>
+    <input type="number" id="value" placeholder="Entrez une valeur">
+
+    <label for="from" id="label-from">De :</label>
+    <select id="from"></select>
+
+    <label for="to" id="label-to">Vers :</label>
+    <select id="to"></select>
+
+    <button onclick="convert()" id="convert-button">Convertir</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
