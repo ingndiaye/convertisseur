@@ -13,7 +13,7 @@ pipeline {
         // Étape 1 : Récupération du code source depuis GitHub
         stage("recuprer code source") {
             steps {
-                git branch: 'main', url: 'https://github.com/Prince-MHDL/Projet_DevOps'
+                git branch: 'main', url: 'https://github.com/ingndiaye/convertisseur'
             }
         }
         // Étape 2 : Exécution des tests
