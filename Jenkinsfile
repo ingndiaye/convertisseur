@@ -1,5 +1,5 @@
 pipeline {
-   agent any
+    agent any
 
     environment {
         IMAGE_VERSION    = "1.${BUILD_NUMBER}"
@@ -8,7 +8,7 @@ pipeline {
     }
 
     stages {
-        stage("recuprer code source") {
+        stage("Récupérer code source") {
             steps {
                 git branch: 'master', url: 'https://github.com/ingndiaye/convertisseur'
             }
@@ -19,12 +19,16 @@ pipeline {
                 echo "Tests en cours"
             }
         }
-        stage('Initialize'){
+
+        stage('Initialize') {
             steps {
-                def dockerHome = tool 'myDocker'
-                env.PATH = "${dockerHome}/bin:${env.PATH}"
-            }   
+                script {
+                    def dockerHome = tool name: 'myDocker'
+                    env.PATH = "${dockerHome}/bin:${env.PATH}"
+                }
+            }
         }
+
         stage("Build Docker Image") {
             steps {
                 script {
