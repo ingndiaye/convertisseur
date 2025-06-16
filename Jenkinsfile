@@ -1,7 +1,13 @@
 // Déclaration du pipeline Jenkins
 pipeline {
     // Exécute le pipeline sur n'importe quel agent
-    agent any
+    //agent any
+    agent {
+        docker {
+            image 'docker:latest'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
     // Déclarer les variables d'environnement globales
     environment {
         IMAGE_VERSION       = "1.${BUILD_NUMBER}"        // version dynamique de l’image
