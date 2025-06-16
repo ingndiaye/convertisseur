@@ -1,4 +1,3 @@
-
 #Récupèrer l'image de apache depuis docker hub
 FROM httpd:alpine   
 #supprimer le fichier index.htlml
