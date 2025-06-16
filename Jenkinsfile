@@ -27,7 +27,7 @@ pipeline {
         stage("Build Docker Image") {
             steps {
                 script {
-                    bat "docker build -t $DOCKER_IMAGE ." //jai remplacer bat par sh
+                    sh "docker build -t $DOCKER_IMAGE ." //jai remplacer bat par sh
                 }
             }
         }
@@ -36,7 +36,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'afma', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
-                    bat """
+                    sh """
                     docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
                     echo 'Docker login successful'
                     docker push $DOCKER_USER/$DOCKER_IMAGE
