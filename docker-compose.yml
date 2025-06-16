@@ -4,16 +4,14 @@ services:
   jenkins:
     image: jenkins/jenkins:lts
     container_name: jenkins
-    user: root  # Pour autoriser l'accès au socket Docker
+    user: root
     restart: always
     ports:
-      - "8081:8080"  # Interface web Jenkins
-      - "50000:50000"  # Connexion des agents
+      - "8080:8080"
+      - "50000:50000"
     volumes:
       - jenkins_home:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock  # Donne accès au Docker hôte
-    environment:
-      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+      - /var/run/docker.sock:/var/run/docker.sock  # Accès au Docker hôte
 
 volumes:
   jenkins_home:
