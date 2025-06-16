@@ -25,9 +25,10 @@ pipeline {
         }
         // Étape 3 : Création de l'image Docker
         stage("Build Docker Image") {
+            
             steps {
                 script {
-                    sh "docker build -t $DOCKER_IMAGE ." //jai remplacer bat par sh
+                    sh "docker image build -t $DOCKER_IMAGE ." //jai remplacer bat par sh
                 }
             }
         }
