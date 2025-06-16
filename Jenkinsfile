@@ -1,45 +1,61 @@
+// Déclaration du pipeline Jenkins
 pipeline {
+    // Exécute le pipeline sur n'importe quel agent
     agent any
-
+     
+    // Déclarer les variables d'environnement globales
     environment {
-        IMAGE_NAME       = "convertisseur-app"
-        IMAGE_VERSION    = "1.${BUILD_NUMBER}"
-        DOCKER_IMAGE     = "${IMAGE_NAME}:${IMAGE_VERSION}"
-        DOCKER_CONTAINER = "convertisseur"
+        IMAGE_VERSION       = "1.${BUILD_NUMBER}"        // version dynamique de l’image
+        DOCKER_IMAGE        = "projet_grp4-app:${IMAGE_VERSION}" // nom de l’image docker
+        DOCKER_CONTAINER    = "projet_grp4"      // nom du conteneur
     }
-
+    // Les étapes du pipeline
     stages {
-        stage("Checkout") {
+        // Étape 1 : Récupération du code source depuis GitHub
+        stage("recuprer code source") {
             steps {
                 git branch: 'master', url: 'https://github.com/ingndiaye/convertisseur'
             }
         }
-
-        stage("Build Docker Image") {
+        // Étape 2 : Exécution des tests
+        stage("Test") {
             steps {
-                sh "docker build -t $DOCKER_IMAGE ."
+                echo "Tests en cours"
             }
         }
-
-        stage("Push to Docker Hub") {
+        // Étape 3 : Création de l'image Docker
+        stage("Build Docker Image") {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'afma', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh """
-                    docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-                    docker tag $DOCKER_IMAGE $DOCKER_USER/$IMAGE_NAME:$IMAGE_VERSION
-                    docker push $DOCKER_USER/$IMAGE_NAME:$IMAGE_VERSION
-                    """
+                script {
+                    sh "docker build -t $DOCKER_IMAGE ." //jai remplacer bat par sh
                 }
             }
         }
-
-        stage("Deploy Container") {
+        // Étape 4 : Publication de l'image sur Docker Hub
+        stage("Push image to Docker Hub") {
             steps {
-                sh """
-                docker container stop $DOCKER_CONTAINER || true
-                docker container rm $DOCKER_CONTAINER || true
-                docker run -d --name $DOCKER_CONTAINER -p 8082:80 $DOCKER_IMAGE
-                """
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'afma', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]){
+                    bat """
+                    docker login -u ${DOCKER_USER} -p ${DOCKER_PASSWORD}
+                    echo 'Docker login successful'
+                    docker push $DOCKER_USER/$DOCKER_IMAGE
+                    """
+                    }
+                }
+            }
+        }
+        // Étape 5 : Déploiement de l'application
+        stage("Deploy App") {
+            steps {
+                script {
+                    sh """
+                    # Arrête le conteneur s'il existe
+                    docker container stop $DOCKER_CONTAINER || true
+                    # Lance un nouveau conteneur en mode détaché(en arrière-plan )
+                    docker container run -d --name $DOCKER_CONTAINER -p 8082:80 $DOCKER_IMAGE
+                    """
+                }
             }
         }
     }
