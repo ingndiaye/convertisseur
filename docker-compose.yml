@@ -4,11 +4,10 @@ services:
   jenkins:
     image: jenkins/jenkins:lts
     container_name: jenkins
-    user: admin
+    user: root
     restart: always
     ports:
-      - "8082:8080"
-      - "50000:50000"
+      - "8081:8080" 
     volumes:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock  # Accès au Docker hôte
