@@ -5,8 +5,8 @@ pipeline {
     // Déclarer les variables d'environnement globales
     environment {
         IMAGE_VERSION       = "1.${BUILD_NUMBER}"        // version dynamique de l’image
-        DOCKER_IMAGE        = "convertisseur-app:${IMAGE_VERSION}" // nom de l’image docker
-        DOCKER_CONTAINER    = "convertisseur"      // nom du conteneur
+        DOCKER_IMAGE        = "projet_grp4-app:${IMAGE_VERSION}" // nom de l’image docker
+        DOCKER_CONTAINER    = "projet_grp4"      // nom du conteneur
     }
     // Les étapes du pipeline
     stages {
