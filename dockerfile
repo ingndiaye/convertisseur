@@ -1,3 +1,12 @@
+FROM jenkins/jenkins:lts
+
+USER root
+
+RUN apt-get update && \
+    apt-get install -y docker.io && \
+    usermod -aG docker jenkins
+
+USER jenkins
 #Récupèrer l'image de apache depuis docker hub
 FROM httpd:alpine   
 #supprimer le fichier index.htlml
